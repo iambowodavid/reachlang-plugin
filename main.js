@@ -66,4 +66,19 @@ define(function(require, exports, module) {
         //     CommandManager.get(REACH_EXECUTE_BTN).setChecked(true);
         // }
     }
+
+    AppInit.appReady(function () {
+
+        //ExtensionUtils.loadStyleSheet(module, "sheet.css");
+
+        CommandManager.register("Run Reach Compiler", REACH_EXECUTE_BTN, handleReachPluginExecute);
+
+        var menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
+
+        menu.addMenuItem(REACH_EXECUTE_BTN);
+
+        let panelMarkup = "<h4 style='color: navy;' id='topboy'>Loaded Reach Plugin....</h4>";//require("text!panel.html");
+
+        panel = WorkspaceManager.createBottomPanel(REACH_EXECUTE_BTN, $(panelMarkup), 10);
+    });
 });
