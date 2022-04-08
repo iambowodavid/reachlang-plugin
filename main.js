@@ -67,6 +67,31 @@ define(function(require, exports, module) {
         // }
     }
 
+    function passToReachCompiler(file){
+        
+        NodeDomain = brackets.getModule("utils/NodeDomain"),
+
+        ShellDomain = new NodeDomain(
+            "hdyShellDomain",
+            ExtensionUtils.getModulePath(module, "node/hdyShellDomain")
+        );
+        
+        panel.$panel[0].innerHTML += "<br/> Running reach on " + file.fullPath;
+
+        ShellDomain.exec("execute", file.fullPath, panel);
+
+        $(ShellDomain).on("stderr", function(evt, data) {
+            panel.$panel[0].innerHTML += "<br/> " + data;
+            panel.$panel[0].style="color: red";
+        });
+
+        $(ShellDomain).on("stdout", function(evt, data) {
+            panel.$panel[0].innerHTML += "<br/> " + data;
+            panel.$panel[0].style="color: navy";
+        });
+
+    }
+
     AppInit.appReady(function () {
 
         //ExtensionUtils.loadStyleSheet(module, "sheet.css");
