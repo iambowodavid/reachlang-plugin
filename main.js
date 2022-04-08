@@ -67,6 +67,10 @@ define(function(require, exports, module) {
         // }
     }
 
+    function openReachDocs(){
+        LiveDev.launch("https://docs.reach.sh/");
+    }
+
     function passToReachCompiler(file){
         
         NodeDomain = brackets.getModule("utils/NodeDomain"),
@@ -98,12 +102,16 @@ define(function(require, exports, module) {
 
         CommandManager.register("Run Reach Compiler", REACH_EXECUTE_BTN, handleReachPluginExecute);
 
+        CommandManager.register("Open Reach Documentation", REACH_DOC_BTN, openReachDocs);
+
         var menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
 
         menu.addMenuItem(REACH_EXECUTE_BTN);
+
+        menu.addMenuItem(REACH_DOC_BTN);
 
         let panelMarkup = "<h4 style='color: navy;' id='topboy'>Loaded Reach Plugin....</h4>";//require("text!panel.html");
 
         panel = WorkspaceManager.createBottomPanel(REACH_EXECUTE_BTN, $(panelMarkup), 10);
     });
-});
+});v
