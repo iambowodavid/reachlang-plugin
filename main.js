@@ -114,4 +114,4 @@ define(function(require, exports, module) {
 
         panel = WorkspaceManager.createBottomPanel(REACH_EXECUTE_BTN, $(panelMarkup), 10);
     });
-});v
+});
