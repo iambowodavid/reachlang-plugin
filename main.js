@@ -100,7 +100,7 @@ define(function(require, exports, module) {
 
         //ExtensionUtils.loadStyleSheet(module, "sheet.css");
 
-        CommandManager.register("Run Reach Compiler", REACH_EXECUTE_BTN, handleReachPluginExecute);
+        CommandManager.register("Start Reach Compiler", REACH_EXECUTE_BTN, handleReachPluginExecute);
 
         CommandManager.register("Open Reach Documentation", REACH_DOC_BTN, openReachDocs);
 
