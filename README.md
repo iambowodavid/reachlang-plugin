@@ -12,7 +12,6 @@
 <br/>
 <h1> &bull; Additional features to be built:</h1>
 <h4>Reach Syntax highlighting</h4>
-<h4>Reach code completion hints</h4>
 <h4>Reach error line navigator in text editor</h4>
   
 
