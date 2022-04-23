@@ -9,7 +9,7 @@
 
         var process = require('child_process');
 
-        process.exec('reach "'+cmdFile+'"',function (err,stdout,stderr) {
+        process.exec('reach compile "'+cmdFile+'"',function (err,stdout,stderr) {
             if (err) {
                 console.log("\r\n"+stderr);
                 _domainManager.emitEvent("hdyShellDomain", "stderr", stderr);

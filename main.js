@@ -2,6 +2,8 @@ define(function(require, exports, module) {
 
     const DocumentManager = brackets.getModule("document/DocumentManager"),
 
+    CodeHintManager = brackets.getModule("editor/CodeHintManager"),
+
     InMemoryFile = brackets.getModule("document/InMemoryFile"),
 
     CommandManager = brackets.getModule("command/CommandManager"),
@@ -25,6 +27,125 @@ define(function(require, exports, module) {
     const REACH_DOC_BTN = "reachworlddocumentation.execute";
 
     let panel;
+
+
+    //register reach hint manager
+    function RSHCompletion() {
+        this.insertHintOnTab = true;
+        this.editor;
+        this.hints = [
+            "Participant",
+            "Participant.publish(Variables)",
+            "PaymentRequestUpdateEvent",
+            "PaymentAddress",
+            "Reach.App(() => {});",
+            "unknowable(toWho, _obj);",
+            "assert(condition);",
+            "while",
+            "commit();",
+            "deploy();",
+            "export ",
+            "const ",
+            "want",
+            "request",
+            "info",
+            "Bytes(num)",
+            "UInt",
+            "Null",
+            "declassify",
+            "interact",
+            "init",
+        ];
+    }
+    
+    RSHCompletion.prototype.hasHints = function (editor, implicitChar) {
+
+        // Document is not able to be edited
+        if (!editor.document.editable) {
+            return false
+        }
+    
+        this.editor = editor;
+
+        // Get needle information
+        //let lastChar = implicitChar
+        let cursor = editor.getCursorPos()
+        let curCharPos = cursor.ch
+        let curLinePos = cursor.line
+        let lineStr = editor._codeMirror.getLine(curLinePos)
+        //let textBeforeCursor = editor.document.getRange({line:curLinePos,ch:0}, cursor).trim()
+        //let totalLines = editor._codeMirror.doc.size
+        
+        let whatIsIt = lineStr.substr(0, curCharPos).replace(/.+(\s|\(|\,|\.)/, '').trim();
+        //console.log(whatIsIt);
+        let hintExists = false;
+        //console.log(this.hints);
+        this.hints.forEach(hint => {
+            if(whatIsIt !== "" && hint.startsWith(whatIsIt)){
+                hintExists = true;
+                return false;
+            }
+        });
+        
+        return hintExists;
+    }
+    
+    RSHCompletion.prototype.getHints = function (implicitChar) {
+        let cursor = this.editor.getCursorPos()
+        let curCharPos = cursor.ch
+        let curLinePos = cursor.line
+        let lineStr = this.editor._codeMirror.getLine(curLinePos)
+        let whatIsIt = lineStr.substr(0, curCharPos).replace(/.+(\s|\(|\,|\.)/, '').trim();
+        
+        let results = this.hints.filter(item => item.startsWith(whatIsIt));
+        
+        return {
+            hints: results,
+            //match: "reach",
+            selectInitial: true,
+            handleWideResults: true
+        }
+    }
+
+    RSHCompletion.prototype.insertHint = function(hint) {
+          if (undefined === this.editor) {
+                return 0;
+          }
+          
+          let cursor = this.editor.getCursorPos()
+          let curCharPos = cursor.ch;
+          let curLinePos = cursor.line;
+          let lineStr = this.editor._codeMirror.getLine(curLinePos);
+          let textBeforeCursor = this.editor.document.getRange({line:curLinePos,ch:0}, cursor);
+          
+          let whatIsIt = lineStr.substr(0, curCharPos).replace(/.+(\s|\(|\,|\.)/, '').trim();
+          
+          let insertIndex = cursor.ch
+      
+          if (hint !== '') {
+            insertIndex = textBeforeCursor.lastIndexOf(whatIsIt);
+          }
+    
+        // var hinttext = String($this.whatIsIt + hint.data('content'))
+    
+        // Replace in editor with hint content
+        this.editor.document.replaceRange(
+          hint,
+          { line: cursor.line, ch: insertIndex },
+          cursor
+        );
+
+        return false;
+    }
+
+    AppInit.appReady(function () {
+
+        var rshCompletion = new RSHCompletion();
+
+        // register the hint provider. Priority = 10 for js and rsh files
+        CodeHintManager.registerHintProvider(rshCompletion, ["all"], 10);
+    });
+
 
     function log(s) {
         console.log("[ReachPlugin] "+s);
