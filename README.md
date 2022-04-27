@@ -3,12 +3,6 @@
 <h1> This is a reach plugin for Brackets text editor </h1>
 
 <h3>The goal is to extend reachlang IDE/text editor support</h3>
-
-<h3>This plugin is curently in development and has only two working features:</h3>
-
-<h>Starting the reach compiler from Brackets <b>(you must have reach installed in your environment path for this to work) (In Brackets editor, click File and then click Start Reach Compiler)</b></h4>
-<h4>&bull; Opening the reach documentation from Brackets (In Brackets editor, click File and then click Open Reach Documentation)</h4>
-
 <br/>
 <h1> &bull; Additional features to be built:</h1>
 <h4>Reach Syntax highlighting</h4>
